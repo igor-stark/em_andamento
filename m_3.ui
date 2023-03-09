@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>950</width>
+    <height>191</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">background: rgba(0,0,0,195);
+border-top-left-radius:25px;
+border-bottom-right-radius:25px;
+border-top-right-radius:25px;
+border-bottom-left-radius:25px;
+</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetDefaultConstraint</enum>
+    </property>
+    <item row="0" column="0">
+     <layout class="QVBoxLayout" name="Main_Layout" stretch="1,10">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="Title_Layout" stretch="5,1">
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <item alignment="Qt::AlignHCenter|Qt::AlignTop">
+         <widget class="QLabel" name="Title">
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+            <kerning>true</kerning>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgba(255,255,255, 220);
+background: transparent;</string>
+          </property>
+          <property name="text">
+           <string>Ferramenta Ajuste</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="Close_Button">
+          <property name="font">
+           <font>
+            <family>Berlin Sans FB Demi</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton#Close_Button{
+color: rgba(255, 255, 255, 180);
+background: transparent;
+background-style: outset;
+}
+QPushButton#Close_Button:hover{
+color: rgba(255,255,255,255);
+}
+QPushButton#Close_Button:pressed{
+paddling-left: 5px;
+paddling-top: 5px;
+color: rgba(220, 20, 60, 230);
+}
+</string>
+          </property>
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="Divisions_Layout" stretch="12,3,3">
+        <item>
+         <layout class="QVBoxLayout" name="Title_Row_Layout" stretch="4">
+          <item>
+           <layout class="QVBoxLayout" name="Row_Layout">
+            <property name="spacing">
+             <number>7</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="Row">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+                <strikeout>false</strikeout>
+                <kerning>true</kerning>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgba(0, 0, 0, 0);
+border: 2px solid rgba(0, 0, 0, 0);
+border-bottom-color: rgba(255,255,255,200);
+color: rgba(255,255,255, 200);
+paddling-bottom: 7px;
+</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="maxLength">
+               <number>1000</number>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+              <property name="placeholderText">
+               <string>File:</string>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="Status_Layout">
+          <item>
+           <widget class="QLineEdit" name="Status_Row">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+color: rgba(255,255,255, 200);</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="Buttons_Layout">
+          <item>
+           <widget class="QPushButton" name="Search_Button">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton#Search_Button{
+border-style:outset;
+border-radius: 15px;
+border-width: 2px;
+border-color: black;
+color: rgba(255,255,255,200);
+background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0  #232526, stop:1#414345);
+}
+QPushButton#Search_Button:hover{
+background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 #414345, stop:1 #232526);
+}
+QPushButton#Search_Button:pressed{
+border-style:inset;
+paddling-left: 5px;
+paddling-top: 5px;
+background-color: rgba(248, 248, 255, 100);
+}
+</string>
+            </property>
+            <property name="text">
+             <string>?</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="Remove_Button">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton#Remove_Button{
+border-style:outset;
+border-radius: 15px;
+border-width: 2px;
+border-color: black;
+color: rgba(255,255,255,200);
+background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0  #232526, stop:1#414345);
+}
+QPushButton#Remove_Button:hover{
+background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 #414345, stop:1 #232526);
+}
+QPushButton#Remove_Button:pressed{
+border-style:inset;
+paddling-left: 5px;
+paddling-top: 5px;
+background-color: rgba(248, 248, 255, 100);
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Remove</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="Clear_Button">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton#Clear_Button{
+border-style:outset;
+border-radius: 15px;
+border-width: 2px;
+border-color: black;
+color: rgba(255,255,255,200);
+background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0  #232526, stop:1#414345);
+}
+QPushButton#Clear+Button:hover{
+background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 #414345, stop:1 #232526);
+}
+QPushButton#Clear_Button:pressed{
+paddling-left: 5px;
+paddling-top: 5px;
+background-color: rgba(248, 248, 255, 100);
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Clear</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="Rodar_Button">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton#Rodar_Button{
+border-style:outset;
+border-radius: 15px;
+border-width: 2px;
+border-color: black;
+color: rgba(255,255,255,200);
+background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0  #232526, stop:1#414345);
+}
+QPushButton#Rodar_Button:hover{
+background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 #414345, stop:1 #232526);
+}
+QPushButton#Rodar_Button:pressed{
+paddling-left: 5px;
+paddling-top: 5px;
+background-color: rgba(248, 248, 255, 100);
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Run</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
