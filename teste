@@ -1,0 +1,129 @@
+def chi_square_distance_test(self, matrices_data: Dict[int, List[np.ndarray]], 
+                                avg_matrix: np.ndarray, alpha: float = 0.05) -> Dict:
+        """
+        6.3.1 - Tests Using the Chi-Square Distance (seguindo exatamente o paper)
+        
+        Q = Σᵢ Σⱼ∈Vᵢ Σₜ (nᵢⱼ⁽ᵗ⁾ - nᵢ⁽ᵗ⁾ p̂ᵢⱼ)² / (nᵢ⁽ᵗ⁾ p̂ᵢⱼ)
+        
+        Args:
+            matrices_data: Dict[year, [count_matrix, prob_matrix]]
+                - matrices_data[year][0] = matriz de contagens
+                - matrices_data[year][1] = matriz de probabilidades
+            avg_matrix: matriz média de probabilidades
+        """
+        from scipy import stats
+        
+        results = {
+            'chi_square_statistics': {},
+            'p_values': {},
+            'degrees_of_freedom': {},
+            'critical_values': {},
+            'test_results': {},
+            'vi_sets': {},  # Conjuntos Vᵢ para cada estado i
+            'overall_test': {}
+        }
+        
+        n_states = avg_matrix.shape[0]
+        T = len(matrices_data)  # número de períodos
+        years = list(matrices_data.keys())
+        
+        # 1. Determinar conjuntos Vᵢ = {j : p̂ᵢⱼ > 0} para cada estado i
+        # (apenas transições positivas na matriz média/amostra inteira)
+        vi_sets = {}
+        for i in range(n_states):
+            vi_sets[i] = [j for j in range(n_states) if avg_matrix[i, j] > 0]
+        
+        results['vi_sets'] = vi_sets
+        
+        # Para cada comparação (matriz anual vs matriz média)
+        total_chi_square = 0
+        total_df = 0
+        
+        for year in years:
+            count_matrix = matrices_data[year][0]  # Matriz de contagens
+            prob_matrix = matrices_data[year][1]   # Matriz de probabilidades
+            
+            chi_square_stat = 0
+            
+            # Para cada estado de origem i
+            for i in range(n_states):
+                vi = vi_sets[i]  # Conjunto de estados destino válidos
+                
+                if len(vi) <= 1:  # Precisa ter pelo menos 2 transições válidas
+                    continue
+                
+                # Número total de observações para estado i no período t
+                ni_t = np.sum(count_matrix[i, :])  # Total de saídas do estado i
+                
+                if ni_t == 0:
+                    continue
+                
+                # Para cada estado destino j ∈ Vᵢ
+                for j in vi:
+                    # Contagens observadas: nᵢⱼ⁽ᵗ⁾ (da matriz de contagens real)
+                    nij_t = count_matrix[i, j]
+                    
+                    # Contagens esperadas: nᵢ⁽ᵗ⁾ * p̂ᵢⱼ
+                    expected = ni_t * avg_matrix[i, j]
+                    
+                    if expected > 0:
+                        # Componente Chi-Quadrado: (observado - esperado)² / esperado
+                        chi_component = (nij_t - expected) ** 2 / expected
+                        chi_square_stat += chi_component
+            
+            results['chi_square_statistics'][year] = chi_square_stat
+            total_chi_square += chi_square_stat
+        
+        # 3. Calcular graus de liberdade: Σᵢ(uᵢ - 1)(vᵢ - 1)
+        # uᵢ = número de períodos (T para todos os estados)
+        # vᵢ = |Vᵢ| = número de transições válidas para estado i
+        
+        df_per_period = 0
+        for i in range(n_states):
+            vi_size = len(vi_sets[i])
+            if vi_size > 1:
+                ui = T  # número de períodos
+                # (uᵢ - 1)(vᵢ - 1) onde uᵢ = T e vᵢ = |Vᵢ|
+                df_per_period += (ui - 1) * (vi_size - 1)
+        
+        # Graus de liberdade para cada teste individual
+        df_individual = df_per_period // T if T > 0 else df_per_period
+        
+        # Para cada matriz individual
+        for year in years:
+            chi_stat = results['chi_square_statistics'][year]
+            
+            # Valor crítico e p-valor
+            critical_value = stats.chi2.ppf(1 - alpha, df_individual)
+            p_value = 1 - stats.chi2.cdf(chi_stat, df_individual) if chi_stat >= 0 else 1.0
+            
+            # Resultado do teste
+            reject_h0 = chi_stat > critical_value
+            
+            results['p_values'][year] = p_value
+            results['degrees_of_freedom'][year] = df_individual
+            results['critical_values'][year] = critical_value
+            results['test_results'][year] = {
+                'reject_homogeneity': reject_h0,
+                'test_statistic': chi_stat,
+                'critical_value': critical_value,
+                'p_value': p_value,
+                'significance_level': alpha
+            }
+        
+        # 4. Teste conjunto (todas as matrizes simultaneamente)
+        combined_df = df_per_period
+        combined_critical = stats.chi2.ppf(1 - alpha, combined_df)
+        combined_p_value = 1 - stats.chi2.cdf(total_chi_square, combined_df) if total_chi_square >= 0 else 1.0
+        
+        results['overall_test'] = {
+            'combined_chi_square': total_chi_square,
+            'degrees_of_freedom': combined_df,
+            'critical_value': combined_critical,
+            'p_value': combined_p_value,
+            'reject_homogeneity': total_chi_square > combined_critical,
+            'significance_level': alpha,
+            'vi_sets_summary': {f'State_{i}': len(vi_sets[i]) for i in range(n_states)}
+        }
+        
+        return results
